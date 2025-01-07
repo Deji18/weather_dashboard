@@ -1,0 +1,53 @@
+<!-- weather/templates/weather/dashboard.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <form method="POST" class="mb-8 bg-white p-6 rounded-lg shadow">
+        {% csrf_token %}
+        <div class="flex gap-4">
+            <input type="text" name="location" placeholder="Enter city name" required
+                   class="flex-1 p-2 border rounded">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Get Weather
+            </button>
+        </div>
+    </form>
+
+    <div class="space-y-4">
+        {% for post in posts %}
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-lg font-semibold">{{ post.location }}</h3>
+                    <p class="text-gray-700">{{ post.temperature }}°C - {{ post.conditions }}</p>
+                    <p class="text-sm text-gray-500">Posted by {{ post.user.username }} at {{ post.created_at|date:"F j, Y, g:i a" }}</p>
+                </div>
+                <div class="flex gap-2">
+                    <form method="POST" action="{% url 'toggle_agreement' post.id 'agree' %}">
+                        {% csrf_token %}
+                        <button class="px-3 py-1 bg-green-100 hover:bg-green-200 rounded">
+                            👍 {{ post.agrees.count }}
+                        </button>
+                    </form>
+                    <form method="POST" action="{% url 'toggle_agreement' post.id 'disagree' %}">
+                        {% csrf_token %}
+                        <button class="px-3 py-1 bg-red-100 hover:bg-red-200 rounded">
+                            👎 {{ post.disagrees.count }}
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+            {% if user == post.user %}
+            <div class="mt-2 space-x-2">
+                <a href="{% url 'edit_post' post.id %}" 
+                class="text-blue-500 hover:text-blue-700">Edit</a>
+                <a href="{% url 'delete_post' post.id %}" 
+                class="text-red-500 hover:text-red-700">Delete</a>
+            </div> {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
