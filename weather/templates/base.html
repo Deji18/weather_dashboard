@@ -10,7 +10,7 @@
         <div class="container mx-auto flex justify-between">
             <a href="/" class="text-xl font-bold">Weather Dashboard</a>
             <div>
-                {% if user == post.user %}
+                {% if user.is_authenticated%}
                     <span>Hello, {{ user.username }}</span>
                     <a href="{% url 'logout' %}" class="ml-4">Logout</a>
                 {% else %}
