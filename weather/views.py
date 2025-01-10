@@ -45,6 +45,7 @@ from django.conf import settings
 
 
 
+
 class WeatherPostViewSet(viewsets.ModelViewSet):
     queryset = WeatherPost.objects.all()
     serializer_class = WeatherPostSerializer
@@ -155,6 +156,11 @@ def delete_post(request, post_id):
         messages.success(request, 'Post deleted successfully!')
         return redirect('dashboard')
     return render(request, 'weather/delete_confirm.html', {'post': post})
+
+
+def post_detail(request, pk):
+    post = get_object_or_404(WeatherPost, pk=pk)
+    return render(request, 'weather/post_detail.html', {'post': post})
 
 def search_posts(request):
     query = request.GET.get('q')

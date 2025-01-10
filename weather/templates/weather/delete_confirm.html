@@ -1,0 +1,11 @@
+<!-- weather/templates/weather/delete_confirm.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Confirm Deletion</h2>
+<p>Are you sure you want to delete "{{ object }}"?</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">delete</button>
+</form>
+{% endblock %}
